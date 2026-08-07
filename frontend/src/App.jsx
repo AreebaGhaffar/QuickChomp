@@ -6,6 +6,8 @@ import Admin from './pages/Admin';
 import AdminProducts from './pages/AdminProducts';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminBilling from './pages/AdminBilling';
+import Locations from './pages/Locations';
+import AdminBranches from './pages/AdminBranches';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
         <strong style={{ color: '#e63946' }}>QuickChomp</strong>
         <Link to="/">Home</Link>
         <Link to="/menu">Menu</Link>
+        <Link to="/locations">Locations</Link>
         <Link to="/login" style={{ marginLeft: 'auto' }}>
           Admin Login
         </Link>
@@ -31,6 +34,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/locations" element={<Locations />} />
         <Route path="/login" element={<Login />} />
         <Route
           path="/admin"
@@ -43,6 +47,7 @@ function App() {
           <Route path="products" element={<AdminProducts />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="billing" element={<AdminBilling />} />
+          <Route path="branches" element={<AdminBranches />} />
         </Route>
       </Routes>
     </BrowserRouter>
