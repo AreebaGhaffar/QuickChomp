@@ -16,6 +16,9 @@ function Admin() {
         <h3>Welcome, {user.name || 'Admin'}</h3>
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
           <Link to="/admin/products">Products</Link>
+          <Link to="/admin/billing">New Bill</Link>
+          <Link to="/admin/dashboard">Sales Dashboard</Link>
+          <Link to="/admin/branches">Branches</Link>
           <button onClick={handleLogout} style={{ padding: '8px', cursor: 'pointer', marginTop: '20px' }}>
             Logout
           </button>
