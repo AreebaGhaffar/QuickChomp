@@ -62,8 +62,11 @@ router.put('/:id', verifyToken, verifyAdmin, upload.single('image'), (req, res) 
   const { name, price, category_id, is_available } = req.body;
   const { id } = req.params;
 
+  // FormData sends booleans as the strings "true"/"false" - convert to 1/0 for MySQL
+  const availableValue = is_available === undefined || is_available === 'true' || is_available === true ? 1 : 0;
+
   let sql = 'UPDATE products SET name = ?, price = ?, category_id = ?, is_available = ?';
-  const params = [name, price, category_id || null, is_available !== undefined ? is_available : true];
+  const params = [name, price, category_id || null, availableValue];
 
   if (req.file) {
     sql += ', image_url = ?';

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, Outlet } from 'react-router-dom';
 
 function Admin() {
   const navigate = useNavigate();
@@ -11,14 +11,19 @@ function Admin() {
   };
 
   return (
-    <div style={{ padding: '30px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Welcome, {user.name || 'Admin'}</h2>
-        <button onClick={handleLogout} style={{ padding: '8px 16px', cursor: 'pointer' }}>
-          Logout
-        </button>
-      </div>
-      <p>This is the admin panel. Product management and dashboard coming next.</p>
+    <div style={{ display: 'flex', minHeight: '80vh' }}>
+      <aside style={{ width: '200px', borderRight: '1px solid #eee', padding: '20px' }}>
+        <h3>Welcome, {user.name || 'Admin'}</h3>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
+          <Link to="/admin/products">Products</Link>
+          <button onClick={handleLogout} style={{ padding: '8px', cursor: 'pointer', marginTop: '20px' }}>
+            Logout
+          </button>
+        </nav>
+      </aside>
+      <main style={{ flex: 1 }}>
+        <Outlet />
+      </main>
     </div>
   );
 }
