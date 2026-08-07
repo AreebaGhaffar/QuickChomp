@@ -4,6 +4,7 @@ import Menu from './pages/Menu';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import AdminProducts from './pages/AdminProducts';
+import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           }
         >
           <Route path="products" element={<AdminProducts />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
