@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
+import { useCart } from '../context/CartContext';
 
 function Menu() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addToCart, itemCount } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -17,7 +21,23 @@ function Menu() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ textAlign: 'center' }}>Our Menu</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '900px', margin: '0 auto' }}>
+        <h2>Our Menu</h2>
+        <button
+          onClick={() => navigate('/checkout')}
+          style={{
+            padding: '10px 16px',
+            background: '#e63946',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Cart ({itemCount})
+        </button>
+      </div>
+
       {products.length === 0 ? (
         <p style={{ textAlign: 'center' }}>No products available yet.</p>
       ) : (
@@ -27,7 +47,7 @@ function Menu() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: '20px',
             maxWidth: '900px',
-            margin: '0 auto',
+            margin: '20px auto',
           }}
         >
           {products.map((product) => (
@@ -50,6 +70,21 @@ function Menu() {
               <h3>{product.name}</h3>
               <p style={{ color: '#e63946', fontWeight: 'bold' }}>${product.price}</p>
               <p style={{ fontSize: '12px', color: '#888' }}>{product.category_name}</p>
+              <button
+                onClick={() => addToCart(product)}
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  marginTop: '8px',
+                  background: '#457b9d',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                }}
+              >
+                Add to Cart
+              </button>
             </div>
           ))}
         </div>
