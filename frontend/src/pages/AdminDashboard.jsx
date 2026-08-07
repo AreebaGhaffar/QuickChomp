@@ -16,18 +16,25 @@ import api from '../api/axios';
 function AdminDashboard() {
   const [summary, setSummary] = useState(null);
   const [daily, setDaily] = useState([]);
+  const [weekly, setWeekly] = useState([]);
+  const [monthly, setMonthly] = useState([]);
   const [productSales, setProductSales] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('daily'); // 'daily' | 'weekly' | 'monthly'
 
   useEffect(() => {
     Promise.all([
       api.get('/dashboard/summary'),
       api.get('/dashboard/daily'),
+      api.get('/dashboard/weekly'),
+      api.get('/dashboard/monthly'),
       api.get('/dashboard/products'),
     ])
-      .then(([summaryRes, dailyRes, productsRes]) => {
+      .then(([summaryRes, dailyRes, weeklyRes, monthlyRes, productsRes]) => {
         setSummary(summaryRes.data);
         setDaily(dailyRes.data);
+        setWeekly(weeklyRes.data);
+        setMonthly(monthlyRes.data);
         setProductSales(productsRes.data);
       })
       .catch((err) => console.error('Failed to load dashboard:', err))
@@ -43,6 +50,18 @@ function AdminDashboard() {
     flex: 1,
     textAlign: 'center',
   };
+
+  const tabStyle = (tab) => ({
+    padding: '8px 16px',
+    cursor: 'pointer',
+    border: 'none',
+    borderBottom: activeTab === tab ? '3px solid #e63946' : '3px solid transparent',
+    background: 'transparent',
+    fontWeight: activeTab === tab ? 'bold' : 'normal',
+  });
+
+  const chartData = activeTab === 'daily' ? daily : activeTab === 'weekly' ? weekly : monthly;
+  const xKey = activeTab === 'daily' ? 'date' : activeTab === 'weekly' ? 'week' : 'month';
 
   return (
     <div style={{ padding: '30px' }}>
@@ -67,12 +86,17 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {/* Daily Sales Trend */}
-      <h3>Sales Trend (Last 30 Days)</h3>
+      {/* Trend Chart with Tabs */}
+      <div style={{ borderBottom: '1px solid #eee', marginBottom: '15px' }}>
+        <button style={tabStyle('daily')} onClick={() => setActiveTab('daily')}>Daily</button>
+        <button style={tabStyle('weekly')} onClick={() => setActiveTab('weekly')}>Weekly</button>
+        <button style={tabStyle('monthly')} onClick={() => setActiveTab('monthly')}>Monthly</button>
+      </div>
+
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={daily}>
+        <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+          <XAxis dataKey={xKey} tick={{ fontSize: 12 }} />
           <YAxis />
           <Tooltip />
           <Legend />
